@@ -45,7 +45,7 @@ class User:
         data = [] 
         record_updated = False 
 
-        while not record_updated: 
+        while True: 
             try: 
                 rec = pickle.load(read_obj)
 
@@ -146,6 +146,7 @@ class User:
                     session_token = rec['session_token']
                     created_on = rec['created_on']
                     return User(username, None, password_digest, session_token, created_on, id)
+
                     if user.check_password(password):
                         return user 
                     else: 
@@ -278,7 +279,10 @@ u = User.all()
 for x in u: 
     print(x.id)
     print(x.username)
-
+    print(x.password_digest)
+    print(x.session_token)
+    print(x.created_on)
+    print()
 # User.destroy(1)
 # User.destroy(2)
 # User.destroy(3)

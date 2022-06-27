@@ -53,9 +53,10 @@ def login():
             if user: 
                 session_token = user.reset_session_token()
                 session['session_token'] = session_token
-                return users_show(user.id)
+                return redirect(f"/users/{user.id}")
+            
     else: 
-        return users_show(current_user().id)
+        return redirect(f"/users/{current_user().id}")
 
 @app.route("/logout")
 def logout(): 
