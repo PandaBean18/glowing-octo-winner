@@ -222,7 +222,8 @@ class User:
         elif not self.__ensure_unique_username(): 
             self.errors.append('Username already taken.')
             return False 
-
+        
+        self.errors = []
         return True 
 
     def check_password(self, password):

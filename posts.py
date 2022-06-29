@@ -5,6 +5,7 @@
 # created_on: string (date)
 import pickle 
 from users import *
+from datetime import date
 
 class Post:
 
@@ -31,7 +32,7 @@ class Post:
             body = rec['body']
             author_id = rec['author_id']
             created_on = rec['created_on']
-            post = Post(title, body, author_id created_on, id)
+            post = Post(title, body, author_id, created_on, id)
             posts.append(post)
 
         return posts 
@@ -71,7 +72,7 @@ class Post:
                     body = rec['body']
                     author_id = rec['author_id']
                     created_on = rec['created_on']
-                    post = Post(title, body, author_id created_on, id)
+                    post = Post(title, body, author_id, created_on, id)
                     return post
             except:
                 break 
@@ -92,7 +93,7 @@ class Post:
             title = self.title 
             body = self.body
             author_id = self.author_id
-            created_on = self.created_on
+            created_on = date.today().strftime("%d %B, %Y")
 
             post = {
                 'id': id,
@@ -119,6 +120,7 @@ class Post:
         elif not (User.find_by_id(self.author_id)): 
             self.errors.append('User must exist')
             return False 
+        self.errors = []
         return True 
 
     def __get_last_post_id(self):
@@ -139,7 +141,6 @@ class Post:
                     return 0
 
         read_obj.close() 
-        print(rec)
         return rec['id']
             
     
