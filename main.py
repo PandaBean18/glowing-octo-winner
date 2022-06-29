@@ -20,7 +20,7 @@ def current_user():
 def users_show(id):
     user = User.find_by_id(int(id))
     if user: 
-        return f"<p>Hello, {user.username}</p>"
+        return render_template('user_show.html.jinja', user=user)
     else: 
         return "<p>Hello, World!</p>"
 
@@ -43,7 +43,7 @@ def new_user():
 def login(): 
     if current_user() == None:
         if request.method == 'GET':
-            return render_template('login.html')
+            return render_template('login.html.jinja')
         else: 
             username = request.form['user[username]']
             password = request.form['user[pass]']
@@ -60,6 +60,7 @@ def login():
 
 @app.route("/logout")
 def logout(): 
+    current_user().reset_session_token()
     session['session_token'] = None 
     return redirect('/login')
 

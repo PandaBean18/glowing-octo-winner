@@ -2,6 +2,7 @@
 # username: string, unique 
 # password_digest: string, unique*
 # session_token: string
+# created_on: string (date)
 
 import pickle 
 import secrets
