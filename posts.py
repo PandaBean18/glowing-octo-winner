@@ -8,7 +8,17 @@ from users import *
 from datetime import date
 
 class Post:
-
+    
+    def create_post_object(attributes):
+        try: 
+            id = attributes['id']
+            title = attributes['title']
+            body = attributes['body']
+            author_id = attributes['author_id']
+            created_on = attributes['created_on']
+            return Post(title, body, author_id, created_on, id)
+        except KeyError:
+            raise "Missing one or more attributes." 
     
     # returns all the users in the posts.dat file
     # all the objects returned by this method are instances of the User class
@@ -27,12 +37,7 @@ class Post:
         posts = []
 
         for rec in data:
-            id = rec['id']
-            title = rec['title']
-            body = rec['body']
-            author_id = rec['author_id']
-            created_on = rec['created_on']
-            post = Post(title, body, author_id, created_on, id)
+            post = Post.create_post_object(rec)
             posts.append(post)
 
         return posts 
@@ -67,12 +72,7 @@ class Post:
                 rec = pickle.load(read_obj)
                 if rec['id'] == id: 
                     read_obj.close()
-                    id = rec['id']
-                    title = rec['title']
-                    body = rec['body']
-                    author_id = rec['author_id']
-                    created_on = rec['created_on']
-                    post = Post(title, body, author_id, created_on, id)
+                    post = Post.create_post_object(rec)
                     return post
             except:
                 break 

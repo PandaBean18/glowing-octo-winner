@@ -9,8 +9,19 @@ import secrets
 import bcrypt
 import time
 from datetime import date 
-
+from posts import Post 
 class User: 
+    def create_user_object(attributes):
+        try: 
+            id = attributes['id']
+            username = attributes['username']
+            password_digest = attributes['password_digest']
+            session_token = attributes['session_token']
+            created_on = attributes['created_on']
+            return User(username, None, password_digest, session_token, created_on, id)
+        except (KeyError, EOFError): 
+            #raise Exception("Missing one or more attributes.")
+            print("Missing one or more attributes.")
 
     # returns all the users in the users.dat file
     # all the objects returned by this method are instances of the User class
@@ -29,12 +40,7 @@ class User:
         users = []
 
         for rec in data:
-            id = rec['id']
-            username = rec['username']
-            password_digest = rec['password_digest']
-            session_token = rec['session_token']
-            created_on = rec['created_on']
-            user = User(username, None, password_digest, session_token, created_on, id)
+            user = User.create_user_object(rec)
             users.append(user)
 
         return users 
@@ -103,11 +109,7 @@ class User:
                 rec = pickle.load(read_obj)
                 if rec['id'] == id: 
                     read_obj.close()
-                    username = rec['username']
-                    password_digest = rec['password_digest']
-                    session_token = rec['session_token']
-                    created_on = rec['created_on']
-                    return User(username, None, password_digest, session_token, created_on, id)
+                    return User.create_user_object(rec)
             except:
                 break 
         read_obj.close()
@@ -121,12 +123,7 @@ class User:
                 rec = pickle.load(read_obj)
                 if rec['session_token'] == session_token:
                     read_obj.close()
-                    id = rec['id']
-                    username = rec['username']
-                    password_digest = rec['password_digest']
-                    session_token = rec['session_token']
-                    created_on = rec['created_on']
-                    return User(username, None, password_digest, session_token, created_on, id)
+                    return User.create_user_object(rec)
             except: 
                 break 
         
@@ -141,13 +138,7 @@ class User:
                 rec = pickle.load(read_obj)
                 if rec['username'] == username:
                     read_obj.close()
-                    id = rec['id']
-                    username = rec['username']
-                    password_digest = rec['password_digest']
-                    session_token = rec['session_token']
-                    created_on = rec['created_on']
-                    return User(username, None, password_digest, session_token, created_on, id)
-
+                    user = User.create_user_object(rec)
                     if user.check_password(password):
                         return user 
                     else: 
@@ -175,6 +166,22 @@ class User:
         self.session_token = session_token
         self.created_on = created_on
         self.errors = []
+    
+    def posts(self): 
+        read_obj = open('posts.dat', 'rb')
+        posts = [] 
+
+        while True: 
+            try: 
+                rec = pickle.load(read_obj)
+                if rec['author_id'] == self.id: 
+                    p = Post.create_post_object(rec)
+                    posts.append(p)
+            except:
+                break 
+
+        read_obj.close() 
+        return posts 
 
     def create(self):
         if not (self.valid()):
@@ -229,7 +236,6 @@ class User:
     def check_password(self, password):
         return bcrypt.checkpw(bytes(password, 'utf-8'), self.password_digest)
 
-
     def __create_password_digest(self, password):
         b_password = bytes(password, 'utf-8') # encoding the password 
         hashed_password = bcrypt.hashpw(b_password, bcrypt.gensalt())
@@ -268,24 +274,3 @@ class User:
     def __generate_session_token(self):
         return secrets.token_urlsafe(16)
 
-# User('TestUser1', 'TestUser1Pass').create()
-# time.sleep(0.1)
-# User('TestUser2', 'TestUser2Pass').create()
-# time.sleep(0.1)
-# User('TestUser3', 'TestUser3Pass').create()
-# time.sleep(0.1)
-# User('TestUser4', 'TestUser4Pass').create()
-
-u = User.all()
-
-for x in u: 
-    print(x.id)
-    print(x.username)
-    print(x.password_digest)
-    print(x.session_token)
-    print(x.created_on)
-    print()
-# User.destroy(1)
-# User.destroy(2)
-# User.destroy(3)
-# User.destroy(4)
