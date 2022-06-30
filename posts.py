@@ -4,7 +4,6 @@
 # author_id: integer 
 # created_on: string (date)
 import pickle 
-from users import *
 from datetime import date
 
 class Post:
@@ -86,6 +85,10 @@ class Post:
         self.created_on = created_on 
         self.id = id 
         self.errors = []
+
+    def author(self): 
+        from users import User
+        return User.find_by_id(self.author_id)
 
     def create(self):
         if self.valid(): 
