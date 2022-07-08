@@ -62,7 +62,7 @@ class Post:
         write_obj.close()
 
 
-    # finding user with id
+    # finding post with id
     def find_by_id(id):
         read_obj = open('posts.dat', 'rb')
 
@@ -114,6 +114,7 @@ class Post:
             return self.errors 
 
     def valid(self): 
+        from users import User
         if len(self.title) == 0: 
             self.errors.append('Title can\'t be empty.')
             return False 

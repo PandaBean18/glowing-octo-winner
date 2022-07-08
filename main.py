@@ -17,10 +17,10 @@ def current_user():
         return None 
 
 @app.route("/users/<id>")
-def users_show(id):
+def user_show(id):
     user = User.find_by_id(int(id))
     if user: 
-        return render_template('user_show.html.jinja', user=user)
+        return render_template('user_show.html', user=user)
     else: 
         return "<p>Hello, World!</p>"
 
@@ -30,20 +30,23 @@ def hello_world():
 
 @app.route("/users/new", methods=['POST', 'GET'])
 def new_user():
-    if request.method == 'GET':
-        return render_template('new_user.html')
-    else: 
-        username = request.form['user[name]']
-        password = request.form['user[pass]']
+    if current_user() == None:
+        if request.method == 'GET':
+            return render_template('new_user.html')
+        else: 
+            username = request.form['user[name]']
+            password = request.form['user[pass]']
 
-        user = User(username, password).create()
-        return redirect(f"/users/{user.id}")
+            user = User(username, password).create()
+            return redirect(f"/users/{user.id}")
+    else:
+        return redirect(f"/users/{current_user().id}")
 
 @app.route("/login", methods=['POST', 'GET'])
 def login(): 
     if current_user() == None:
         if request.method == 'GET':
-            return render_template('login.html.jinja')
+            return render_template('login.html')
         else: 
             username = request.form['user[username]']
             password = request.form['user[pass]']
@@ -54,9 +57,32 @@ def login():
                 session_token = user.reset_session_token()
                 session['session_token'] = session_token
                 return redirect(f"/users/{user.id}")
-            
     else: 
         return redirect(f"/users/{current_user().id}")
+
+@app.route("/posts/<id>")
+def post_show(id): 
+    post = Post.find_by_id(int(id)) 
+    if post: 
+        return render_template('post_show.html', post=post)
+    else: 
+        return redirect('/')
+
+@app.route("/posts/new", methods=['POST', 'GET'])
+def new_post():
+    if current_user():
+        if request.method == 'GET':
+            return render_template('new_post.html')
+        else: 
+            author_id = current_user().id 
+            title = request.form['post[title]']
+            body = request.form['post[desc]']
+            post_id = Post(title, body, author_id).create().id
+            return redirect(f'/posts/{post_id}')
+    else: 
+        return redirect(f"/login")
+
+
 
 @app.route("/logout")
 def logout(): 
