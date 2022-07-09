@@ -4,4 +4,9 @@
     <p>By: {{post.author().username}}</p>
     <p>Created on: {{post.created_on}}</p>
     <h3>{{post.body}}</h3>
+    <br>
+    <form action="/posts/{{post.id}}/destroy" method="post">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="submit" value="Delete post">
+    </form>
 {% endblock content %}
