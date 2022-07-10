@@ -18,7 +18,35 @@ class Post:
             return Post(title, body, author_id, created_on, id)
         except KeyError:
             raise "Missing one or more attributes." 
-    
+
+    # update post attributes with the given id
+    def update(id, attributes): 
+        read_obj = open('posts.dat', 'rb')
+        record_updated = False 
+        posts = []
+
+        while True:
+            try:
+                rec = pickle.load(read_obj)
+
+                if rec['id'] == id: 
+                    rec['title'] = attributes.get('title') or rec['title']
+                    rec['body'] = attributes.get('body') or rec['body']
+                    record_updated = True
+                
+                posts.append(rec)
+            except: 
+                break 
+
+        read_obj.close()
+        write_obj = open('posts.dat', 'wb')
+
+        for post in posts: 
+            pickle.dump(post, write_obj)
+
+        write_obj.close()
+        return record_updated
+
     # returns all the users in the posts.dat file
     # all the objects returned by this method are instances of the User class
     def all():
