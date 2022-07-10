@@ -113,3 +113,25 @@ def delete_post(id):
     else: 
         return redirect("/")
 
+@app.route("/posts/<id>/edit", methods=['GET', 'POST'])
+def edit_post(id): 
+    id = int(id)
+    post = Post.find_by_id(id)
+    if current_user() and current_user().id == post.author_id: 
+        if request.method == 'GET': 
+            return render_template("edit_post.html", post=post)
+        else: 
+            print(1)
+            attributes = {}
+            attributes['title'] = request.form['post[title]']
+            attributes['body'] = request.form['post[body]']
+
+            if Post.update(id, attributes): 
+                print(2)
+                return redirect(f'/posts/{id}')
+            else: 
+                print(3)
+                return redirect(f'/posts/{id}/edit')
+    else: 
+        return redirect(f'/posts{id}')
+    
