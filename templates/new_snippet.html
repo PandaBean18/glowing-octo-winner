@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<form action="/posts/{{post_id}}/snippets/new" method="post">
+    <label for="languages">Please select the language: </label>
+    <select name="snippet[language]" id="languages">
+        <option disabled selected>--Please select a language--</option>
+        <option value="python">Python</option>
+        <option value="rust">Rust</option>
+        <option value="ruby">Ruby</option>
+        <option value="java">Java</option>
+        <option value="c++">C++</option>
+        <option value="c#">C#</option>
+    </select>
+    <br>
+    <br>
+    <textarea name="snippet[code]" rows="8" cols="80" placeholder="Code Snippet (use 2 spaces for indent)"></textarea>
+    <br>
+    <br>
+    <input type="submit" value="Add snippet!">
+</form>
+{% endblock content %}

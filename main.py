@@ -135,3 +135,13 @@ def edit_post(id):
     else: 
         return redirect(f'/posts{id}')
     
+
+# creating new snippets 
+@app.route("/posts/<post_id>/snippets/new", methods=['GET', 'POST'])
+def new_snippet(post_id): 
+    post_id = int(post_id)
+    snippet_id = int(snippet_id)
+    if request.method == 'GET':
+        return render_template("new_snippet.html", post_id=post_id)
+
+
