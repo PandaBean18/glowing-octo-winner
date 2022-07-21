@@ -1,0 +1,52 @@
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    background-color: #000000;
+    color: #f0f0f0;
+    margin-left: -10px;
+    margin-right: -10px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+.user-info {
+    width: auto;
+
+}
+
+.user-info h1 {
+    float: left;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 28px;
+    margin-top: 26px;
+}
+
+.home a {
+    color: #f0f0f0;
+    padding-left: 10px;
+    text-decoration: none;
+    font-size: 28px;
+}
+
+input[type="submit"] {
+    background-color: #fde4c3;
+    width: 75px;
+    height: 35px;
+    margin: 0;
+    border-radius: 12px;
+    font-family: 'Spline Sans Mono', monospace;
+    border: 0px;
+}
+
+form {
+    width: 100px;
+    float: left;
+    margin-top: 26px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+input[type="submit"]:hover {
+    cursor: pointer;
+}
