@@ -1,0 +1,55 @@
+.outer-container {
+    width: 95%;
+    margin: auto;
+}
+
+.outer-container a {
+    text-decoration: none;
+    color: #000000;
+    font-weight: 1000;
+    font-size: 22px;
+}
+
+.inner-posts-container {
+    color: white;
+    background-color: #A09D9C;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.inner-posts-container:hover {
+    background-color: #898786;
+    transition: 0.3s;
+}
+
+.inner-posts-container:hover .heading {
+    margin-left: 15px;
+    transition: 0.3s;
+}
+
+.heading {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    margin: 0px;
+    color: black;
+}
+
+.post-author {
+    margin-top: 5px;
+    margin-bottom: 0px;
+    font-size: 18px;
+}
+
+.post-desc {
+    font-size: 18px;
+}
+
+.new-post {
+    margin: auto;
+}
+
+.new-post a {
+    display: block;
+    text-align: center;
+    color: white;
+}

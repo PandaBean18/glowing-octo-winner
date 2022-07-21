@@ -118,6 +118,11 @@ class Post:
         from users import User
         return User.find_by_id(self.author_id)
 
+    def snippets(self): 
+        from snippets import Snippet 
+        posts = Snippet.find_by_post_id(self.id)
+        return posts 
+
     def create(self):
         if self.valid(): 
             id = self.__get_last_post_id() + 1

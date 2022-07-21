@@ -3,8 +3,13 @@
 
 <head>
     <title>My Webpage</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200&family=Spline+Sans+Mono:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='posts.css') }}" />
 </head>
 
 <body>
@@ -22,7 +27,9 @@
                             {{ current_user.username }} 
                         </a>
                     </h1>
-                    <form action="/logout"></form>
+                    <form action="/logout">
+                        <input type="submit" value="Logout">
+                    </form>
                 </div>
             {% else %} 
                 <button>Log in</button>
