@@ -3,6 +3,7 @@
 
 <head>
     <title>My Webpage</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 
@@ -11,17 +12,17 @@
         <div class="main-header">
             <div class="home">
                 <h1>
-                    Home
+                    <a href="/">Home</a>
                 </h1>
             </div>
             {% if current_user %}
                 <div class="user-info">
                     <h1>
-                        <a href="<%= user_url(current_user) %>" style="text-decoration: none; color: #f0f0f0">
+                        <a href="/users/{{current_user.id}}" style="text-decoration: none; color: #f0f0f0">
                             {{ current_user.username }} 
                         </a>
                     </h1>
-                    <button>Logout</button>
+                    <form action="/logout"></form>
                 </div>
             {% else %} 
                 <button>Log in</button>

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+    <p>{{current_user}}</p>
     {% for post in posts %}
         <a href="/posts/{{post.id}}">
             <div class="posts-container">

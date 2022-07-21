@@ -1,0 +1,30 @@
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    background-color: #000000;
+    color: #f0f0f0;
+    margin-left: -10px;
+    margin-right: -10px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+.user-info {
+    width: auto;
+
+}
+
+.user-info h1 {
+    float: left;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 28px;
+    margin-top: 26px;
+}
+
+.home a {
+    color: #f0f0f0;
+    padding-left: 10px;
+    text-decoration: none;
+    font-size: 28px;
+}

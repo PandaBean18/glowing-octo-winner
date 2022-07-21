@@ -21,7 +21,7 @@ def current_user():
 @app.route("/")
 def hello_world():
     posts = Post.all()
-    return render_template('home.html', posts=posts)
+    return render_template('home.html', posts=posts, current_user=current_user())
 
 # session routes 
 # new session
@@ -57,9 +57,9 @@ def logout():
 def user_show(id):
     user = User.find_by_id(int(id))
     if user: 
-        return render_template('user_show.html', user=user)
+        return render_template('user_show.html', user=user, current_user=current_user())
     else: 
-        return "<p>Hello, World!</p>"
+        return redirect('/')
 
 #create user
 @app.route("/users/new", methods=['POST', 'GET'])
@@ -82,7 +82,7 @@ def new_user():
 def post_show(id): 
     post = Post.find_by_id(int(id)) 
     if post: 
-        return render_template('post_show.html', post=post)
+        return render_template('post_show.html', post=post, current_user=current_user())
     else: 
         return redirect('/')
 
@@ -91,7 +91,7 @@ def post_show(id):
 def new_post():
     if current_user():
         if request.method == 'GET':
-            return render_template('new_post.html')
+            return render_template('new_post.html', current_user=current_user())
         else: 
             author_id = current_user().id 
             title = request.form['post[title]']
@@ -119,7 +119,7 @@ def edit_post(id):
     post = Post.find_by_id(id)
     if current_user() and current_user().id == post.author_id: 
         if request.method == 'GET': 
-            return render_template("edit_post.html", post=post)
+            return render_template("edit_post.html", post=post, current_user=current_user())
         else: 
             print(1)
             attributes = {}
@@ -140,8 +140,16 @@ def edit_post(id):
 @app.route("/posts/<post_id>/snippets/new", methods=['GET', 'POST'])
 def new_snippet(post_id): 
     post_id = int(post_id)
-    snippet_id = int(snippet_id)
-    if request.method == 'GET':
-        return render_template("new_snippet.html", post_id=post_id)
+    current_user = current_user()
+    if current_user: 
+        if request.method == 'GET':
+            return render_template("new_snippet.html", post_id=post_id, current_user=current_user())
+        else:
+            language = request.form['snippet[language]']
+            content = request.form['snippet[content]']
+            author_id = current_user.id 
+            snippet = Snippet(language, content, post_id, author_id).create()
+            return redirect(f'/posts/{post_id}')
+    
 
 
