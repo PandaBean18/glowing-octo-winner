@@ -1,10 +1,15 @@
 {% extends 'base.html' %}
 {% block content %}
-    <form action="/posts/new" method="post">
-        <input type="text" name="post[title]" placeholder="Title">
-        <br>
-        <textarea name="post[desc]" cols="30" rows="10" placeholder="Description"></textarea>
-        <br>
-        <input type="submit" value="Create Post!">
-    </form>
+    <h1 style="text-align: center;">Add a new post</h1>
+    <div class="new">
+        <form action="/posts/new" method="post">
+            <input type="text" name="post[title]" placeholder="Title">
+            <br>
+            <br>
+            <textarea name="post[desc]" cols="80" rows="8" placeholder="Description"></textarea>
+            <br>
+            <br>
+            <input type="submit" value="Create Post!">
+        </form>
+    </div>
 {% endblock content %}
