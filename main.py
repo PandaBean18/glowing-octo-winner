@@ -139,6 +139,7 @@ def edit_post(id):
 # creating new snippets 
 @app.route("/posts/<post_id>/snippets/new", methods=['GET', 'POST'])
 def new_snippet(post_id): 
+    from snippets import Snippet
     post_id = int(post_id)
     if current_user(): 
         if request.method == 'GET':
@@ -148,6 +149,7 @@ def new_snippet(post_id):
             content = request.form['snippet[content]']
             author_id = current_user().id 
             snippet = Snippet(language, content, post_id, author_id).create()
+            print(r'{}'.format(snippet.content))
             return redirect(f'/posts/{post_id}')
     
 

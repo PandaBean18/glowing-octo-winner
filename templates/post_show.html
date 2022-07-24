@@ -4,6 +4,11 @@
     <p>By: {{post.author().username}}</p>
     <p>Created on: {{post.created_on}}</p>
     <h3>{{post.body}}</h3>
+
+    {% for snippet in post.snippets() %}
+        {{snippet.beautify_snippet()|safe}}
+    {% endfor %}
+
     <br>
     <form action="/posts/{{post.id}}/destroy" method="post">
         <input type="hidden" name="_method" value="DELETE">

@@ -153,3 +153,71 @@ class Snippet:
 
         read_obj.close() 
         return rec['id']
+
+    def beautify_snippet(self): 
+        keywords = ['def',
+                    'class', 
+                    'if', 
+                    'else', 
+                    'end', 
+                    'elsif', 
+                    'elif', 
+                    'try', 
+                    'except', 
+                    'begin', 
+                    'rescue', 
+                    'return', 
+                    'for', 
+                    'while', 
+                    'in', 
+                    'do', 
+                    'fn', 
+                    'int',
+                    'String'
+                ]
+        sentences = [] 
+
+        for sent in self.content.split('\r\n'):
+            if sent.strip()[0] == "#": 
+                sentences.append(f'<span style=\'color: #7F8487\'>{sent}</span>')
+                continue 
+
+            words = [] 
+            is_string = False 
+            starting_string_char = None 
+            i = 0
+            w = sent.split(' ')
+            while i < len(w):
+                word = w[i]
+                if len(word) == 0: 
+                    i += 1
+                    continue
+                elif (word[0] == '\'' or word[0] == '"') and not is_string:
+                    is_string = True 
+                    starting_string_char = word[0]
+                    words.append(f"<span style='color: #95CD41'>{word} ")
+                elif (word[-1] == '\'' or word[-1] == '"') and is_string and starting_string_char == word[-1]:
+                    is_string = False 
+                    words[-1] += f"{word}</span>"
+                elif is_string: 
+                    words[-1] += f"{word} "
+                elif word[-1] == ':' and word[0:-1] in keywords:
+                    words.append(f"<span style='color: #79DAE8'>{word[0:-1]}</span><span>:</span>")
+                elif word[0] == ':':
+                    words.append(f"<span style='color: #FF8D29'>{word}</span>")
+                elif word in keywords:
+                    words.append(f"<span style='color: #79DAE8'>{word}</span>")
+                elif sent.split(' ')[i-1] == 'class': 
+                    words.append(f"<span style='color: #FFCD38'>{word}</span>")
+                elif sent.split(' ')[i-1] == 'def':
+                    words.append(f"<span style='color: #0AA1DD'>{word}</span>")
+                else: 
+                    words.append(word)
+                i += 1
+            
+            sentences.append(f"<span>{' '.join(words)}</span>")
+
+        return "\r\n".join(sentences)
+
+        
+                    
