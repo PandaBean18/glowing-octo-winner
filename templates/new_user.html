@@ -1,10 +1,26 @@
 {% extends "base.html" %}
+{% block header %}
+    <div class="sec-header">
+        <div>
+            <h1>Sign up!</h1>
+        </div>
+    </div>
+{% endblock %}
 {% block content %}
-    <form action="/users/new" method="post">
-        <input type="text" name="user[name]" placeholder="name">
-        <br>
-        <input type="text" name="user[pass]" placeholder="password">
-        <br>
-        <input type="submit" value="Create User!">
-    </form>
+    <div class="new">
+        <form action="/users/new" method="post">
+            <input type="text" name="user[name]" placeholder="name">
+            <br>
+            <br>
+            <input type="text" name="user[pass]" placeholder="password">
+            <br>
+            <br>
+            <input type="submit" value="Create User!">
+        </form>
+    </div>
+
+    <br>
+    <div class="new-user">
+        <a href="/login">Existing user? Log in!</a>
+    </div>
 {% endblock content %}

@@ -50,3 +50,39 @@ form {
 input[type="submit"]:hover {
     cursor: pointer;
 }
+
+form {
+    width: 100px;
+    float: left;
+    margin-top: 26px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+input[type="submit"]:hover {
+    cursor: pointer;
+}
+
+.sec-header {
+    background: #000000;
+    color: #f0f0f0;
+    margin-left: -10px;
+    margin-right: -10px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    height: 82px;
+}
+
+.sec-header h1 {
+    margin: 0px;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 28px;
+    text-align: center;
+}
+
+.sec-header div {
+    width: 200px;
+    margin: auto;
+    padding-top: 25px;
+}
