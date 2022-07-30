@@ -1,5 +1,20 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>{{user.username}}</h1>
-<h3>Member since: {{user.created_on}}</h3>
+    <h1>{{user.username}}</h1>
+    <br>
+    <h3>Member since: {{user.created_on}}</h3>
+    <br>
+    <h3>Authored posts: </h3>
+    <div class="outer-container">
+        {% for p in user.posts() %}
+            <a href="/posts/{{p.id}}">
+                <div class="inner-posts-container">
+                    <p class="heading">{{p.title}}</p>
+                    <p class="post-desc">{{p.body}}</p>
+                    <p>Posted on: {{p.created_on}}</p>
+                </div>
+            </a>
+            <br>
+        {% endfor %}
+    </div>
 {% endblock %}

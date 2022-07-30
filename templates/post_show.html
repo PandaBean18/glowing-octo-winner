@@ -1,22 +1,73 @@
 {% extends "base.html" %}
 {% block content %}
-    <h2>{{post.title}}</h2>
-    <p>By: {{post.author().username}}</p>
-    <p>Created on: {{post.created_on}}</p>
-    <h3>{{post.body}}</h3>
+{% if length > 1 %}
+<div style="width: 70%; float: left; border-right: 1px solid #dbd9d9; padding-right: 5px">
+{% else %}
+<div style="width: 70%">
+{% endif %}
+    <h1 class="post-heading">{{post.title}}</h1>
+    <h3><a href="/users/{{post.author().id}}" style="text-decoration: none; color: #000000">By: {{post.author().username}}</a></h3>
+    <h3>Created on: {{post.created_on}}</h3>
+    <div class="desc">
+        <p style="font-weight: bold">
+            {{post.body}}
+        </p>
+    </div>
 
+    <div class="snippet">
     {% for snippet in post.snippets() %}
         <pre>
-            <code>
-                <span></span>
+<code>
+<span></span>
 {{snippet.beautify_snippet()|safe}}
-            </code>
+</code>
         </pre>
-    {% endfor %}
 
+        {% if current_user.id == snippet.author_id %}
+        <form action="/snippets/{{snippet.id}}/destroy" method="post">
+            <input type="submit" value="Delete" style="margin-bottom: 20px;">
+        </form>
+        <br>
+        {% endif %}
+    {% endfor %}
+    </div>
+
+{% if current_user %}
     <br>
-    <form action="/posts/{{post.id}}/destroy" method="post">
-        <input type="hidden" name="_method" value="DELETE">
-        <input type="submit" value="Delete post">
-    </form>
+    <div class="new-snippet">
+        <a href="/posts/{{post.id}}/snippets/new">Add a new snippet</a>
+    </div>
+{% endif %}
+
+{% if current_user and current_user.id == post.author_id %}
+    <div class="creator_options">
+        <form action="/posts/{{post.id}}/edit" method="get">
+            <input type="submit" value="Edit post">
+        </form>
+
+        <form action="/posts/{{post.id}}/destroy" method="post">
+            <input type="hidden" name="_method" value="delete">
+            <input type="submit" value="Delete post">
+        </form>
+    </div>
+{% endif %}
+</div>
+
+{% if length > 1 %}
+    <h2 style="color: black; font-family: 'Oswald', sans-serif; font-size: 36px; text-align: center;">More from the author:</h2>
+    <div class="outer-container" style="overflow: hidden; padding-left: 5px; width: 250px;">
+        {% for p in posts %}
+            {% if p.id != post.id %}
+                <a href="/posts/{{p.id}}">
+                    <div class="inner-posts-container">
+                        <p class="heading">{{p.title}}</p>
+                        <p class="post-desc">{{p.body[0:16] + '...'}}</p>
+                        <p>Posted on: {{p.created_on}}</p>
+                    </div>
+                </a>
+                <br>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
 {% endblock content %}

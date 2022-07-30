@@ -22,6 +22,20 @@ class Snippet:
         except (KeyError, EOFError): 
             print("Missing one or more attributes")
 
+    def find_by_id(id): 
+        read_obj = open('snippets.dat', 'rb')
+
+        while True: 
+            try: 
+                rec = pickle.load(read_obj)
+                if rec['id'] == id: 
+                    read_obj.close()
+                    return Snippet.create_snippet_object(rec) 
+            except: 
+                break 
+        read_obj.close()
+        return None 
+
 
     def find_by_post_id(id): 
         read_obj = open('snippets.dat', 'rb')
@@ -178,7 +192,7 @@ class Snippet:
         sentences = [] 
 
         for sent in self.content.split('\r\n'):
-            if sent.strip()[0] == "#": 
+            if sent.strip() and sent.strip()[0] == "#": 
                 sentences.append(f'<span style=\'color: #7F8487\'>{sent}</span>')
                 continue 
 
@@ -226,7 +240,7 @@ class Snippet:
         while i < len(sentences): 
             j = 0 
             x = new_snippet.split('\r\n')[i]
-            while sentences[i][j] == ' ': 
+            while sentences[i] and sentences[i][j] and sentences[i][j] == ' ': 
                 if x[7:11] == 'span': 
                     x = self.insert(x, ' ', 35)
                 else: 

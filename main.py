@@ -21,7 +21,7 @@ def current_user():
 @app.route("/")
 def hello_world():
     posts = Post.all()
-    return render_template('home.html', posts=posts, current_user=current_user())
+    return render_template('home.html', posts=posts[::-1], current_user=current_user())
 
 # session routes 
 # new session
@@ -82,7 +82,7 @@ def new_user():
 def post_show(id): 
     post = Post.find_by_id(int(id)) 
     if post: 
-        return render_template('post_show.html', post=post, current_user=current_user())
+        return render_template('post_show.html', post=post, current_user=current_user(), length=len(post.author().posts()), posts=post.author().posts()[::-1])
     else: 
         return redirect('/')
 
@@ -97,7 +97,7 @@ def new_post():
             title = request.form['post[title]']
             body = request.form['post[desc]']
             post_id = Post(title, body, author_id).create().id
-            return redirect(f'/posts/{post_id}')
+            return redirect(f'/posts/{post_id}/snippets/new')
     else: 
         return redirect(f"/login")
 
@@ -151,6 +151,20 @@ def new_snippet(post_id):
             snippet = Snippet(language, content, post_id, author_id).create()
             print(r'{}'.format(snippet.content))
             return redirect(f'/posts/{post_id}')
+
+# destroying snippets
+@app.route("/snippets/<id>/destroy", methods=['POST'])
+def destroy_snippet(id):
+    id = int(id)
+    from snippets import Snippet 
+    snippet = Snippet.find_by_id(id)
+    if current_user() and snippet.author_id == current_user().id: 
+        post_id = snippet.post_id
+        Snippet.destroy(id)
+        return redirect(f'/posts/{post_id}')
+    else: 
+        return redirect(f'/posts/{post_id}')
+
     
 
 
