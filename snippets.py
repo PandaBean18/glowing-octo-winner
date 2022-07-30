@@ -217,7 +217,36 @@ class Snippet:
             
             sentences.append(f"<span>{' '.join(words)}</span>")
 
-        return "\r\n".join(sentences)
+        return self.fix_indent("\r\n".join(sentences))
 
+    def fix_indent(self, new_snippet): 
+        i = 0
+        sentences = self.content.split('\r\n')
+        indented_snippet = [] 
+        while i < len(sentences): 
+            j = 0 
+            x = new_snippet.split('\r\n')[i]
+            while sentences[i][j] == ' ': 
+                if x[7:11] == 'span': 
+                    x = self.insert(x, ' ', 35)
+                else: 
+                    x = self.insert(x, ' ', 6)
+                
+                j += 1
+
+            indented_snippet.append(x)
+            i += 1
+        return '\r\n'.join(indented_snippet)
+
+    def insert(self, string, char, index):
+        new_string = ''
+        i = 0 
+        for x in string: 
+            if i == index: 
+                new_string += char 
+
+            new_string += x 
+            i += 1
+        return new_string 
         
                     

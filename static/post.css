@@ -1,0 +1,44 @@
+.post-heading {
+    border-bottom: 1px solid #dbd9d9;
+    font-family: 'Oswald', sans-serif;
+    font-size: 50px;
+    margin-top: 0px;
+    color: black;
+}
+
+.snippet {
+    overflow: hidden;
+}
+
+.snippet form {
+    width: 75px;
+    margin-top: 0px;
+    margin-left: 425px;
+    text-align: center;
+}
+
+pre {
+    background: rgb(45, 45, 45);
+    color: white;
+    width: 500px;
+    border-radius: 12px;
+    padding: 5px;
+    overflow: scroll;
+}
+
+.new-snippet {
+    margin: auto;
+    width: 134px;
+    height: 50px;
+    background-color: #fde4c3;
+    border-radius: 12px;
+}
+
+.new-snippet a {
+    display: block;
+    text-align: center;
+    padding-top: 5px;
+    text-decoration: none;
+    color: #000000;
+    font-weight: bold;
+}

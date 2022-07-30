@@ -146,7 +146,7 @@ def new_snippet(post_id):
             return render_template("new_snippet.html", post_id=post_id, current_user=current_user())
         else:
             language = request.form['snippet[language]']
-            content = request.form['snippet[content]']
+            content = f'# Snippet by: {current_user().username}\r\n# Language: {language}\r\n' + request.form['snippet[content]']
             author_id = current_user().id 
             snippet = Snippet(language, content, post_id, author_id).create()
             print(r'{}'.format(snippet.content))

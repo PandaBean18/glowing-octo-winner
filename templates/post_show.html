@@ -6,7 +6,12 @@
     <h3>{{post.body}}</h3>
 
     {% for snippet in post.snippets() %}
-        {{snippet.beautify_snippet()|safe}}
+        <pre>
+            <code>
+                <span></span>
+{{snippet.beautify_snippet()|safe}}
+            </code>
+        </pre>
     {% endfor %}
 
     <br>
