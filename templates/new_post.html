@@ -12,4 +12,13 @@
             <input type="submit" value="Add a snippet to your post">
         </form>
     </div>
+
+    {% with error_messages = get_flashed_messages() %}
+        {% if error_messages %}
+            <br>
+            <div class="errors">
+                <h2>{{error_messages[0]}}</h2>
+            </div>
+        {% endif %}
+    {% endwith %}
 {% endblock content %}

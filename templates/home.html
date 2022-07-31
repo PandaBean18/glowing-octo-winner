@@ -2,8 +2,12 @@
 {% block content %}
     {% if current_user %}
     <div class="new-post">
-        <h2><a href="/posts/new">FEEL LIKE ENLIGHTENING USERS WITH A NEW TOPIC? CREATE A NEW POST!</a></h2>
+        <h2><a href="/posts/new" style="text-decoration: none;">FEEL LIKE ENLIGHTENING USERS WITH A NEW TOPIC? CREATE A NEW POST!</a></h2>
     </div>
+    {% else %}
+        <div class="new-post">
+            <h2><a href="/login" style="text-decoration: none;">WANT TO ADD A NEW POST? LOG IN!</a></h2>
+        </div>
     {% endif %}
     <div class="outer-container">
     {% for post in posts %}

@@ -5,6 +5,7 @@ from flask import redirect
 from flask import request
 from flask import url_for
 from flask import session
+from flask import flash
 from users import *
 
 app = Flask(__name__)
@@ -40,6 +41,9 @@ def login():
                 session_token = user.reset_session_token()
                 session['session_token'] = session_token
                 return redirect(f"/users/{user.id}")
+            else: 
+                flash('Invalid credentials.')
+                return redirect('/login')
     else: 
         return redirect(f"/users/{current_user().id}")
 
@@ -72,7 +76,11 @@ def new_user():
             password = request.form['user[pass]']
 
             user = User(username, password).create()
-            return redirect(f"/users/{user.id}")
+            if type(user) != type([]):
+                return redirect(f"/users/{user.id}")
+            else:  
+                flash(user[0])
+                return redirect('/users/new')
     else:
         return redirect(f"/users/{current_user().id}")
 
@@ -96,8 +104,13 @@ def new_post():
             author_id = current_user().id 
             title = request.form['post[title]']
             body = request.form['post[desc]']
-            post_id = Post(title, body, author_id).create().id
-            return redirect(f'/posts/{post_id}/snippets/new')
+            post = Post(title, body, author_id).create()
+            if type(post) != type([]): 
+                post_id = post.id 
+                return redirect(f'/posts/{post_id}/snippets/new')
+            else:  
+                flash(post[0])
+                return redirect('/posts/new')
     else: 
         return redirect(f"/login")
 
@@ -121,16 +134,14 @@ def edit_post(id):
         if request.method == 'GET': 
             return render_template("edit_post.html", post=post, current_user=current_user())
         else: 
-            print(1)
             attributes = {}
             attributes['title'] = request.form['post[title]']
             attributes['body'] = request.form['post[body]']
 
             if Post.update(id, attributes): 
-                print(2)
                 return redirect(f'/posts/{id}')
             else: 
-                print(3)
+                flash('Something went wrong.')
                 return redirect(f'/posts/{id}/edit')
     else: 
         return redirect(f'/posts{id}')
@@ -149,8 +160,11 @@ def new_snippet(post_id):
             content = f'# Snippet by: {current_user().username}\r\n# Language: {language}\r\n' + request.form['snippet[content]']
             author_id = current_user().id 
             snippet = Snippet(language, content, post_id, author_id).create()
-            print(r'{}'.format(snippet.content))
-            return redirect(f'/posts/{post_id}')
+            if type(snippet) != type([]):
+                return redirect(f'/posts/{post_id}')
+            else:  
+                flash(snippet[0])
+                return redirect(f'/posts/{post_id}/snippets/new')
 
 # destroying snippets
 @app.route("/snippets/<id>/destroy", methods=['POST'])
