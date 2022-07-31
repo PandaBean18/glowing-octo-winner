@@ -1,3 +1,7 @@
+# https://www.lfd.uci.edu/~gohlke/pythonlibs/#python-ldap
+# link to install python-ldap as there were issues creating .whl files in windows 
+# install the .whl file w python version on machine (cp39 is python -v => 3.9.*)
+
 from flask import Flask 
 from markupsafe import escape
 from flask import render_template
@@ -9,12 +13,15 @@ from flask import flash
 from users import *
 
 app = Flask(__name__)
+# flask requires you to have a secret key to be able to use session cookies 
+# see https://flask.palletsprojects.com/en/2.1.x/quickstart/#sessions
 app.secret_key = b'3bbeb23b5e850898a4b872c5908302899d3fa8f63cda539cd2ce03205531346a'
 
 # find the current user 
 def current_user():
     if session.get('session_token'): 
         return User.find_by_session_token(session.get('session_token'))
+        # session_token is always set to either None or a base16 string
     else: 
         return None 
 
@@ -126,6 +133,7 @@ def delete_post(id):
     else: 
         return redirect("/")
 
+# editing a post
 @app.route("/posts/<id>/edit", methods=['GET', 'POST'])
 def edit_post(id): 
     id = int(id)
@@ -146,7 +154,7 @@ def edit_post(id):
     else: 
         return redirect(f'/posts{id}')
     
-
+# snippets routes
 # creating new snippets 
 @app.route("/posts/<post_id>/snippets/new", methods=['GET', 'POST'])
 def new_snippet(post_id): 
@@ -178,7 +186,3 @@ def destroy_snippet(id):
         return redirect(f'/posts/{post_id}')
     else: 
         return redirect(f'/posts/{post_id}')
-
-    
-
-

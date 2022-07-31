@@ -7,6 +7,9 @@ import pickle
 from datetime import date
 
 class Post:
+
+    # DOCUMENTATION FOR MOST OF THE CLASS METHODS IS ALREADY DONE IN users.py 
+    # too lazy to repeat
     
     def create_post_object(attributes):
         try: 
@@ -114,10 +117,12 @@ class Post:
         self.id = id 
         self.errors = []
 
+    # author of the post
     def author(self): 
         from users import User
         return User.find_by_id(self.author_id)
 
+    # all of the snippets of the post
     def snippets(self): 
         from snippets import Snippet 
         posts = Snippet.find_by_post_id(self.id)

@@ -68,8 +68,8 @@ class User:
                 break 
 
         read_obj.close()
-        # writing all the data back in the file 
 
+        # writing all the data back in the file 
         write_obj = open('users.dat', 'wb')
 
         for rec in data:
@@ -79,6 +79,7 @@ class User:
 
         return record_updated
 
+    # deleting a record w id = id
     def destroy(id):
         read_obj = open('users.dat', 'rb')
         data = [] 
@@ -115,6 +116,7 @@ class User:
         read_obj.close()
         return None
 
+    # finding a user by session token
     def find_by_session_token(session_token):
         read_obj = open('users.dat', 'rb')
 
@@ -130,6 +132,9 @@ class User:
         read_obj.close()
         return None
 
+    # finding user with a particular username and password 
+    # first finds a user w the given username (will never have multiple users with the same username)
+    # then checks if password digest matches
     def find_by_credentials(username, password):
         read_obj = open('users.dat', 'rb')
 
@@ -167,6 +172,8 @@ class User:
         self.created_on = created_on
         self.errors = []
     
+    # returns a list of all the posts authored by the user
+    # eqv to rails has_many relation
     def posts(self): 
         read_obj = open('posts.dat', 'rb')
         posts = [] 
@@ -183,9 +190,10 @@ class User:
         read_obj.close() 
         return posts 
 
+    # creating an instance of the user in .dat file
     def create(self):
-        if not (self.valid()):
-            return self.errors 
+        if not (self.valid()): # ensuring that the user instance is valid
+            return self.errors # returning the list of errors, used later to flash errors
         else: 
             last_id = self.__get_last_user_id()
             id = last_id + 1
@@ -210,6 +218,8 @@ class User:
 
             return User(username, None, password_digest, session_token, id)
 
+    # reseting a user's session token. 
+    # updates user's session token in the .dat file and returns it as well
     def reset_session_token(self):
         session_token = self.__generate_session_token() 
         User.update(self.id, {'session_token': session_token})
@@ -233,15 +243,20 @@ class User:
         self.errors = []
         return True 
 
+    # checking if stored password (digest) and given passwords match
     def check_password(self, password):
         return bcrypt.checkpw(bytes(password, 'utf-8'), self.password_digest)
 
+    # private methods 
+
+    # creating password digest, only called by class's #create() function
     def __create_password_digest(self, password):
         b_password = bytes(password, 'utf-8') # encoding the password 
         hashed_password = bcrypt.hashpw(b_password, bcrypt.gensalt())
         return hashed_password
 
-    def __ensure_unique_username(self): # returns false if username is taken 
+    # returns false if username is taken
+    def __ensure_unique_username(self):  
         users = User.all() 
 
         for user in users: 
@@ -271,6 +286,7 @@ class User:
         print(rec)
         return rec['id']
 
+    # generates session token lul
     def __generate_session_token(self):
         return secrets.token_urlsafe(16)
 

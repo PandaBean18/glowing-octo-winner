@@ -10,6 +10,9 @@ from datetime import date
 
 class Snippet: 
 
+    # DOCUMENTATION FOR MOST OF THE CLASS METHODS IS ALREADY DONE IN users.py 
+    # too lazy to repeat
+
     def create_snippet_object(attributes):
         try: 
             id = attributes['id']
@@ -138,6 +141,7 @@ class Snippet:
             return False 
         return True 
 
+    # dead men tell no tales
     def __ensure_author_exists(self): 
         if self.author() == None: 
             return False 
@@ -168,6 +172,8 @@ class Snippet:
         read_obj.close() 
         return rec['id']
 
+    # my attempt at trying to get minimal syntax highlighting
+    # would 100% recommend using highlight-js 
     def beautify_snippet(self): 
         keywords = ['def',
                     'class', 
@@ -190,7 +196,9 @@ class Snippet:
                     'String'
                 ]
         sentences = [] 
-
+        # basically splits all of the 'code' into lines (by splitting on '\r\n')
+        # then splits sentences to words by splitting on ' ', 
+        # wraps each word in a span tag with a specific color based off of some basic logic (check if statements) 
         for sent in self.content.split('\r\n'):
             if sent.strip() and sent.strip()[0] == "#": 
                 sentences.append(f'<span style=\'color: #7F8487\'>{sent}</span>')
@@ -233,6 +241,8 @@ class Snippet:
 
         return self.fix_indent("\r\n".join(sentences))
 
+    # since sentences are split into words by splitting on ' ', all
+    # initial indentation is lost
     def fix_indent(self, new_snippet): 
         i = 0
         sentences = self.content.split('\r\n')
@@ -252,6 +262,7 @@ class Snippet:
             i += 1
         return '\r\n'.join(indented_snippet)
 
+    # insert a character at a particular index in a string
     def insert(self, string, char, index):
         new_string = ''
         i = 0 
