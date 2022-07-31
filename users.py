@@ -216,7 +216,7 @@ class User:
 
             write_obj.close()
 
-            return User(username, None, password_digest, session_token, id)
+            return User.create_user_object(h)
 
     # reseting a user's session token. 
     # updates user's session token in the .dat file and returns it as well
@@ -283,7 +283,6 @@ class User:
                     return 0
 
         read_obj.close() 
-        print(rec)
         return rec['id']
 
     # generates session token lul
