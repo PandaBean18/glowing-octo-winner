@@ -84,6 +84,7 @@ def new_user():
 
             user = User(username, password).create()
             if type(user) != type([]):
+                session['session_token'] = user.session_token
                 return redirect(f"/users/{user.id}")
             else:  
                 flash(user[0])
